@@ -58,15 +58,19 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     }
   }
 
-  void _loadNewsForCategory(String category) {
-    if (_isLoading[category] == true) return;
-    
-    setState(() {
-      _isLoading[category] = true;
-    });
+  void _loadNewsForCategory(String category, {bool forceRefresh = false}) {
+  if (_isLoading[category] == true) return;
 
-    context.read<NewsBloc>().add(FetchNewsEvent(category));
-  }
+  setState(() {
+    _isLoading[category] = true;
+    if (forceRefresh) {
+      _cachedArticles[category] = []; // Clear old articles on refresh
+    }
+  });
+
+  context.read<NewsBloc>().add(FetchNewsEvent(category, forceRefresh: forceRefresh));
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +133,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
               return RefreshIndicator(
                 onRefresh: () async {
-                  _loadNewsForCategory(category);
+                  // _loadNewsForCategory(category);
+                     _loadNewsForCategory(category, forceRefresh: true);
                 },
                 child: ListView.builder(
                   itemCount: articles.length,

@@ -6,7 +6,8 @@ class GetTopHeadlines {
 
   GetTopHeadlines(this.repository);
 
-  Future<List<Article>> execute(String category) async {
-    return await repository.getTopHeadlines(category);
+  Future<List<Article>> execute(String category, {bool forceRefresh = false}) {
+    return repository.getTopHeadlines(category,forceRefresh: forceRefresh);
   }
 }
+

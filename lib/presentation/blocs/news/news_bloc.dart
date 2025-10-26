@@ -55,7 +55,7 @@ Future<void> _onFetchNews(FetchNewsEvent event, Emitter<NewsState> emit) async {
       return;
     }
 
-    final articles = await getTopHeadlines.execute(event.category);
+    final articles = await getTopHeadlines.execute(event.category,forceRefresh:event.forceRefresh);
 
     if (articles.isEmpty) {
       emit(NewsError('No articles found.', category: event.category));

@@ -16,7 +16,14 @@ class NewsRepositoryImpl implements NewsRepository {
   });
 
   @override
-  Future<List<Article>> getTopHeadlines(String category) async {
+  Future<List<Article>> getTopHeadlines(String category,{bool forceRefresh = false}) async {
+    if (forceRefresh) {
+    // Force network fetch even if cache exists
+    final remoteArticles = await remoteDataSource.getTopHeadlines(category);
+    final List<Article> articles=List.from(remoteArticles);
+    await localDataSource.cacheArticles(category, articles);
+    return articles;
+  }
     if (await networkInfo.isConnected) {
       try {
         // Get remote articles (List<ArticleModel>)
