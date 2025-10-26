@@ -18,9 +18,10 @@ class NewsRepositoryImpl implements NewsRepository {
   @override
   Future<List<Article>> getTopHeadlines(String category,{bool forceRefresh = false}) async {
     if (forceRefresh) {
-    // Force network fetch even if cache exists
+    // 
     final remoteArticles = await remoteDataSource.getTopHeadlines(category);
-    final List<Article> articles=List.from(remoteArticles);
+    // final List<Article> articles=List.from(remoteArticles);
+    final articles = remoteArticles.map((model) => model.toEntity()).toList();
     await localDataSource.cacheArticles(category, articles);
     return articles;
   }
