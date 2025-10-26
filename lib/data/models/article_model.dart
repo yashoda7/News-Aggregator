@@ -29,6 +29,12 @@ class ArticleModel {
       _$ArticleModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$ArticleModelToJson(this);
+   factory ArticleModel.fromEntity(Article article) => ArticleModel(
+        title: article.title,
+        description: article.description,
+        url: article.url,
+        urlToImage: article.urlToImage,
+      );
 
   Article toEntity() => Article(
         author: author,

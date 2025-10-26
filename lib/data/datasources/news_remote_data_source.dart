@@ -17,16 +17,17 @@ class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
   });
 
   @override
-  Future<List<ArticleModel>> getTopHeadlines(String category) async {
-    final response = await dioClient.get(
-      '/v2/top-headlines',
-      queryParameters: {
-        'country': 'in',
-        'category': category,
-        'apiKey': apiKey,
-      },
-    );
-
+ Future<List<ArticleModel>> getTopHeadlines(String category, {int page = 1, int pageSize = 20}) async {
+  final response = await dioClient.get(
+    '/v2/top-headlines',
+    queryParameters: {
+      'country': 'us',
+      'category': category,
+      'page': page,
+      'pageSize': 50,
+      'apiKey': apiKey,
+    },
+  );
     if (response.statusCode == 200) {
       final articles = (response.data['articles'] as List)
           .map((json) => ArticleModel.fromJson(json))

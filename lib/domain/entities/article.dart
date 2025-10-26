@@ -18,4 +18,5 @@ class Article {
     this.content,
     this.sourceName,
   });
+  
 }
